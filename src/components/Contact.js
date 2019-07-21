@@ -37,7 +37,7 @@ export default class Contact extends Component {
                         }
                     `}
                 </style>
-                <div class="custom-card">
+                <div className="custom-card">
                     <p className="h1">Telefones para contato</p>
                     <p>(18)99624-1620</p>
                     <p>(18)99618-4541</p>

@@ -58,7 +58,19 @@ export default class PostImage extends Component {
             size:this.state.size,
             price:this.state.price,
         })
-        .then(res => {this.updateList(); document.getElementById('form').reset()})
+        .then(() => {this.updateList(); document.getElementById('form').reset(); this.setState({
+            ...this.state,
+            name:'',
+            url:'',
+            url1:'',
+            url2:'',
+            url3:'',
+            url4:'',
+            url5:'',
+            description:'',
+            size:'',
+            price:''
+        })})
         .catch(err => alert('Provavelmente há algum campo repetido / incompleto: ' + err))
     }
 
