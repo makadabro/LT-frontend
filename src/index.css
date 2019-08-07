@@ -29,7 +29,7 @@ html{
   position: relative;
   width: 80vw;
   height: 80vh;
-  background-color: white;
+  background-color: rgba(0,0,0,0);
   border-radius:40px;
   transition: all .5s;
   margin:1em auto;
@@ -517,7 +517,7 @@ form input:focus{
       transform: translateX(-50%);
       overflow: hidden;
       height: 85vh;
-
+      background: white !important;
     }
 
     .profile{
