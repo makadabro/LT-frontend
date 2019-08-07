@@ -530,11 +530,3 @@ form input:focus{
       display: inline-block;
     }
 }
-  
-@media only screen and (orientation:landscape) and (max-width: 1000px){
-  body {
-    height: 100vw;
-    width:100%;
-    transform: rotate(-90deg);
-  }
-}
