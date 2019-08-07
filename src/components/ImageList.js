@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Navbar, Input, Button, Card, CardBody, CardImg, CardTitle, UncontrolledPopover, PopoverBody, ButtonGroup } from 'reactstrap'
-
 import '../index.css'
-import { Link } from 'react-router-dom'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMoneyBillWave, faTag } from '@fortawesome/free-solid-svg-icons'
 
 export default class ImageList extends Component {
     state ={
@@ -19,21 +19,13 @@ export default class ImageList extends Component {
         .catch(err => console.log(err))
     }
 
-    handleChange = (e) =>{
-        this.setState({
-            ...this.state,
-            search: e.target.value
-        })
-    }
-
     handleClick = (url) =>{
         window.location = '/product/' + url;
     }
     
-
     render() {
-        let c = 0;
-        const { images, search } = this.state;
+        const { images } = this.state;
+        const { search } = this.props;
         if(images && images.length){
             const searchQuery = images.filter(query => 
                 query.name.toLowerCase().includes(search.toLowerCase())
@@ -41,42 +33,26 @@ export default class ImageList extends Component {
             if( searchQuery.length !== 0){
                 return(
                     <>
-                    <Navbar>
-                        <Input onChange={this.handleChange} placeholder="Pesquisar"/>
-                    </Navbar>
+                   
                     <div className="scrolling-wrapper">
                             {searchQuery.map(image => (
-                                c++,
-                                <div
-                                    key = {image._id}
-                                    className="C"
-                                >
-                                <CardImg className="img"
-                                top={true}
-                                
-                                src={image.url}
-                                />
-                                <CardBody>
-                                    <CardTitle style={{color:"#57FFBF"}}><p className="card-title">{image.name}</p></CardTitle>
-                                    
-                                    <ButtonGroup>
-                                        <button id={'t' + c.toString()}>Info</button>
-        
-                                        <button onClick={() => {this.handleClick(image._id)}}>+Fotos</button>
-                                    </ButtonGroup>
-                                    
-                                    <UncontrolledPopover trigger="focus" target ={'t' + c.toString()}>
-                                        
-                                        <PopoverBody className="info">
-                                            Aluguel: R${image.price}
-                                            <br/>
-                                            {image.size ? 'Tamanho: ' + image.size : null}
-                                            <br/>
+                               
+                                <div key = {image._id}  className="Card">
+                                    <input type="checkbox" name="" className="toggler"/>
+                                    <div className="toggle">+</div>
+                                    <div className="imgBox">
+                                        <img src={image.url} alt=" "/>
+                                    </div>
+                                    <div className="details">
+                                        <div className="cont">
+                                            {image.name}
+                                                    <div>{image.size ? <FontAwesomeIcon icon={faTag}/> : null}{image.size ? ' ' + image.size : null}</div>
+                                                    <div><FontAwesomeIcon icon={faMoneyBillWave}/>{' R$' + image.price}</div>
                                             {image.description ? image.description : null}
-                                        </PopoverBody>
-                                   
-                                </UncontrolledPopover>
-                                </CardBody>
+                                            <br/>
+                                                    <button className="more-btn" onClick={() => this.handleClick(image._id)}>Mais Fotos</button>
+                                        </div>
+                                    </div>                               
                                 </div>
                             ))}
                     </div>
@@ -85,18 +61,13 @@ export default class ImageList extends Component {
             } else {
                 return (
                     <>
-                     <Navbar>
-                        <Input onChange={this.handleChange} placeholder="Pesquisar"/>
-                    </Navbar>
                     <h1>Não há produtos em estoque.</h1>
                     </>
                 )
             }
         }
-        return (
-             <Navbar>
-                        <input onChange={this.handleChange} placeholder="Pesquisar"/>
-            </Navbar>
-        );
+        return  <div className="loader">
+        <div className="loading-spinner"></div>
+        </div>;
     }
 }

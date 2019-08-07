@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../index.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 
-export default class PostImage extends Component {
+export default class EditProduct extends Component {
 
     state={
         name:'',
@@ -24,16 +22,30 @@ export default class PostImage extends Component {
         username:'',
         password:'',
         response:'',
-        images:[]
+        image:[]
     }
 
     updateList = () =>{
-        axios.get(process.env.REACT_APP_API_URL + '/images')
-        .then(res => {
-            this.setState({ ...this.state, images: res.data })
-        })
-        .catch(err => console.log(err))
+        axios.get(process.env.REACT_APP_API_URL +  '/images/' + this.props.match.params.id)
+            .then(res => {
+                this.setState({ 
+                    ...this.state,
+                    image: res.data,
+                    name:res.data.name,
+                    url:res.data.url,
+                    url1:res.data.url1,
+                    url2:res.data.url2,
+                    url3:res.data.url3,
+                    url4:res.data.url4,
+                    url5:res.data.url5,
+                    description:res.data.description,
+                    size:res.data.size,
+                    price:res.data.price,
+                })
+            })
+            .catch(err => console.log('Error: ' + err))
     }
+
     componentDidMount(){
         this.updateList();
     }
@@ -47,7 +59,7 @@ export default class PostImage extends Component {
 
     handleSubmit = (e) =>{
         e.preventDefault();
-        axios.post(process.env.REACT_APP_API_URL + '/images/add', {
+        axios.post(process.env.REACT_APP_API_URL + '/images/update/' + this.state.image._id, {
             name: this.state.name,
             url:this.state.url,
             url1:this.state.url1,
@@ -59,19 +71,7 @@ export default class PostImage extends Component {
             size:this.state.size,
             price:this.state.price,
         })
-        .then(() => {this.updateList(); document.getElementById('form').reset(); alert('Salvo com sucesso'); this.setState({
-            ...this.state,
-            name:'',
-            url:'',
-            url1:'',
-            url2:'',
-            url3:'',
-            url4:'',
-            url5:'',
-            description:'',
-            size:'',
-            price:''
-        })})
+        .then(() => {window.location = '/admin'})
         .catch(err => alert('Provavelmente há algum campo repetido / incompleto: ' + err))
     }
 
@@ -92,40 +92,20 @@ export default class PostImage extends Component {
         }
     }
 
-    deleteImage = (id) =>{
-        axios.delete(process.env.REACT_APP_API_URL + '/images/' + id)
-            .then(res => {
-                this.updateList();
-            })
-            .catch(err => alert(err))
-    }
 
     handleClick = (url) =>{
         window.location = '/product/' + url;
     }
 
     render() {
-        let list;
-        if(this.state.images.length !== 0){
-            list = this.state.images.map(image => {
-                return(
-                    <li key={image._id}>
-                    <div className="admin-product">
-                        <button onClick={() => this.handleClick(image._id)}>{image.name}</button>
-                        <button onClick={() => {window.location = '/edit/' + image._id}}><FontAwesomeIcon icon={faEdit}/></button>
-                        <button onClick={() => this.deleteImage(image._id)}><FontAwesomeIcon icon={faTrashAlt}/></button>
-                    </div>
-                    </li>
-                )
-            })
-        }else{
-            list = null;
-        }
-        if(this.state.authorized){
+        if(this.state.authorized && this.state.image){
         return (
-            <>
+           
             <form onSubmit={this.handleSubmit}>
                     <div className="auth-div">
+                        Editando {this.state.image.name}
+                    </div>
+                   <div className="auth-div">
                     <input onChange={this.handleChange}type="text" id="name" placeholder="Nome"/></div>
                     <div className="auth-div">    
                     <input onChange={this.handleChange}type="text" id="size" placeholder="Tamanho"/></div>
@@ -149,11 +129,7 @@ export default class PostImage extends Component {
                     <button>Salvar</button>
                     </div>
             </form>
-            <ul className="admin-product-list">
-            {list}
-            </ul>
             
-            </>
         )}
         else{
            return (
