@@ -19,8 +19,6 @@ export default class PostImage extends Component {
         size:'',
         price:'',
         authorized : false,
-        expectedUsername:'Allan Kretzmann',
-        expectdPassword:'9.332622e+157',
         username:'',
         password:'',
         response:'',
@@ -77,8 +75,10 @@ export default class PostImage extends Component {
 
     auth = (e) =>{
         e.preventDefault();
-        const {username, expectedUsername, password, expectdPassword } = this.state;
-        if(username === expectedUsername && password === expectdPassword){
+        const {username, password} = this.state;
+        const expectedUsername = process.env.REACT_APP_USER;
+        const expectedPassword = process.env.REACT_APP_PASSWORD;
+        if(username === expectedUsername && password === expectedPassword){
             this.setState({
                 ...this.state,
                 password:'',
@@ -124,7 +124,8 @@ export default class PostImage extends Component {
         if(this.state.authorized){
         return (
             <>
-            <form onSubmit={this.handleSubmit}>
+            <form id="form" onSubmit={this.handleSubmit} autoComplete="off">
+                <input autoComplete="false" name="hidden" type="text" style={{"display":"none"}}></input>
                     <div className="auth-div">
                     <input onChange={this.handleChange}type="text" id="name" placeholder="Nome"/></div>
                     <div className="auth-div">    
@@ -157,7 +158,8 @@ export default class PostImage extends Component {
         )}
         else{
            return (
-               <form className="auth-form" onSubmit={this.auth}>
+               <form className="auth-form" onSubmit={this.auth} autoComplete="off">
+               <input autoComplete="false" name="hidden" type="text" style={{"display":"none"}}></input>
                     <div className="auth-div">
                     <input id="username" type="text" onChange={this.handleChange} placeholder="Usuário" ref={el => this.Username = el}/>
                     </div>
