@@ -23,7 +23,7 @@ export default class Home extends Component {
                         <FontAwesomeIcon size="lg" icon={faSearch}/> 
                         <input onChange={this.handleChange}/>
                 </div> 
-                <ImageList search={this.state.search}/> 
+                <ImageList search={this.state.search}/>    
                 <footer className="footer"><p><a href="#navbar"><FontAwesomeIcon icon={faHome} size="2x"/></a></p></footer>  
             </div>
         )

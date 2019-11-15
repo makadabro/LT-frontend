@@ -15,8 +15,7 @@ export default class Contact extends Component {
                     <p><FontAwesomeIcon icon={faWhatsapp} size="lg"/>: (18) 997087496</p>
                     <p style={{"margin":"0"}}><a href="https://www.instagram.com/lojinhadatrupe/?hl=pt-br"><FontAwesomeIcon icon={faInstagram} size="3x"/></a></p>
                 </div>
-
-                <img alt="profile" className="profile" src="../assets/Profile.jpg"/>
+                <img alt="" className="profile" href="https://res.cloudinary.com/dpqp9b6b7/image/upload/v1573850033/Profile_vvhfn1.jpg"/>
             </div>
         )
     }
